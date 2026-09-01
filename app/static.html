@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Projects</title><style>body{font-family:sans-serif;max-width:720px;margin:2rem auto}input,select,button{padding:.45rem;margin:.2rem}li{margin:.5rem}</style></head>
+<body><h1>Projects</h1><form id="project-form"><input id="name" placeholder="Project name" required><input id="description" placeholder="Description"><select id="status"><option>planned</option><option>active</option><option>completed</option></select><button>Create</button></form><p id="message"></p><ul id="projects"></ul><script>
+const list=document.querySelector('#projects'), message=document.querySelector('#message');
+async function load(){const response=await fetch('/projects'); const projects=await response.json(); list.innerHTML=projects.map(p=>`<li><strong>${p.name}</strong> — ${p.status}: ${p.description}</li>`).join('') || '<li>No projects yet.</li>';}
+document.querySelector('#project-form').addEventListener('submit',async event=>{event.preventDefault();const body={name:name.value,description:description.value,status:status.value};const r=await fetch('/projects',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});message.textContent=r.ok?'Created.':'Could not create project.';if(r.ok){event.target.reset();load();}});load();
+</script></body></html>

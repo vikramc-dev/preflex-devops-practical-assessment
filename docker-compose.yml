@@ -1,0 +1,11 @@
+services:
+  project-app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_PATH: /data/projects.db
+    volumes:
+      - project_data:/data
+volumes:
+  project_data:

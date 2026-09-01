@@ -1,0 +1,18 @@
+stages:
+  - test
+  - build
+
+test:
+  image: python:3.12-slim
+  stage: test
+  script:
+    - pip install -r requirements.txt
+    - pytest -q
+
+build_image:
+  image: docker:27
+  stage: build
+  services:
+    - docker:27-dind
+  script:
+    - docker build -t project-assessment:$CI_COMMIT_SHORT_SHA .
